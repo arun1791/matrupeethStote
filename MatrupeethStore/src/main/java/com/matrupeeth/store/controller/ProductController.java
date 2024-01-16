@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,7 @@ public class ProductController {
     private FileService fileService;
 
     //created by
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<ProductDto>create(@RequestBody ProductDto productDto)
     {
@@ -38,6 +40,7 @@ public class ProductController {
         return new ResponseEntity<>(productDto1, HttpStatus.CREATED);
     }
     //updated
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{productId}")
     public ResponseEntity<ProductDto>updateProduct(@RequestBody ProductDto productDto,@PathVariable String productId)
     {
@@ -46,6 +49,7 @@ public class ProductController {
     }
 
     //deleted
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{productId}")
     public ResponseEntity<ApiResponseMassege>deleteProduct(@PathVariable String productId)
     {
@@ -101,6 +105,7 @@ public class ProductController {
         return  new ResponseEntity<>(productDtoPageableResponse,HttpStatus.OK);
     }
     //upload image
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/image/{productId}")
     public  ResponseEntity<ImgaeResponse> uploadUserImage(
             @PathVariable String productId,

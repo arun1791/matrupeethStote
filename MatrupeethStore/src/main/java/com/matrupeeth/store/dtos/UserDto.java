@@ -1,5 +1,6 @@
 package com.matrupeeth.store.dtos;
 
+import com.matrupeeth.store.entities.Role;
 import com.matrupeeth.store.valiadte.ImageNamevalid;
 import lombok.*;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,4 +33,5 @@ public class UserDto {
     private  String about;
     @ImageNamevalid
     private  String imageName;
+    private Set<RoleDto> roles=new HashSet<RoleDto>();
 }

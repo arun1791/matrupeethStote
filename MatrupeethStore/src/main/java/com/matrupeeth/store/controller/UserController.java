@@ -6,6 +6,7 @@ import com.matrupeeth.store.dtos.PageableResponse;
 import com.matrupeeth.store.dtos.UserDto;
 import com.matrupeeth.store.services.FileService;
 import com.matrupeeth.store.services.UserService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@Api(value = "UsersController", description="Rest Api for user  management creating")
 public class UserController {
     @Autowired
     private UserService userService;

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class CategoryController {
     private Logger logger= LoggerFactory.getLogger(UserController.class);
 
     //craete
+    @PreAuthorize("hasRole('ADMIN')")
    @PostMapping("/")
     public ResponseEntity<CategoryDto> createCategory(@Validated @RequestBody CategoryDto categoryDto)
     {
@@ -46,6 +48,7 @@ public class CategoryController {
     }
 
     //update
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{categoryId}")
     public  ResponseEntity<CategoryDto> updateCategory(@RequestBody CategoryDto categoryDto,@PathVariable String categoryId)
     {
@@ -56,6 +59,7 @@ public class CategoryController {
     }
 
     //get all categories
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{categoryId}")
     public  ResponseEntity<ApiResponseMassege> deleteCategory(@PathVariable String categoryId)
     {

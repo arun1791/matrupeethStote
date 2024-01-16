@@ -3,9 +3,11 @@ package com.matrupeeth.store.services.Impl;
 import com.matrupeeth.store.controller.UserController;
 import com.matrupeeth.store.dtos.PageableResponse;
 import com.matrupeeth.store.dtos.UserDto;
+import com.matrupeeth.store.entities.Role;
 import com.matrupeeth.store.entities.User;
 import com.matrupeeth.store.exception.ResourcesNotFoundException;
 import com.matrupeeth.store.helper.Helper;
+import com.matrupeeth.store.repositories.RoleRepsitory;
 import com.matrupeeth.store.repositories.UserRepository;
 import com.matrupeeth.store.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,6 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Value("${user.profile.image.path}")
     private  String  imagePath;
+
+    @Value("${normal.role.id}")
+    private String normalRoleId;
+    @Autowired
+    private RoleRepsitory roleRepsitory;
     @Override
     public UserDto createUser(UserDto userDto) {
         //gernate uniqu id
@@ -48,7 +56,10 @@ public class UserServiceImpl implements UserService {
         userDto.setUserId(userId);
         //set password endocde
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
         User user =dtoToEntity(userDto);
+        Role role = roleRepsitory.findById(normalRoleId).get();
+        user.getRoles().add(role);
         User user1 = this.userRepository.save(user);
         UserDto userDto1=entityTodtos(user1);
         return userDto1;
@@ -127,6 +138,12 @@ public class UserServiceImpl implements UserService {
         List<User> users = this.userRepository.findByNameContaining(keyword);
         List<UserDto> dtoList = users.stream().map(user -> entityTodtos(user)).collect(Collectors.toList());
         return dtoList;
+    }
+
+    @Override
+    public Optional<User> findUserByEmailForGoogleAuth(String email) {
+
+        return userRepository.findByEmail(email);
     }
 
     private UserDto entityTodtos(User user1) {

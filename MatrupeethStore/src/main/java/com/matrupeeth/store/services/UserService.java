@@ -6,6 +6,7 @@ import com.matrupeeth.store.entities.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     //create
@@ -22,4 +23,6 @@ public interface UserService {
     UserDto getUserByEmail(String email);
     //other user spedfie
     List<UserDto>searchUser(String keyword);
+
+    Optional<User>findUserByEmailForGoogleAuth(String email);
 }
